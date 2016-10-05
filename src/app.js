@@ -6,6 +6,7 @@
   $scope.fields = [];
 
   $scope.addField = () => {
+    $scope.field.name = $scope.field.name.trim();
     $scope.fields.push($scope.field);
     $scope.field = { isReq : false };
     $scope.showFieldForm = false;

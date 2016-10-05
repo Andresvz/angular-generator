@@ -42,7 +42,7 @@
             <fieldset>
               <legend>Form Options</legend>
               <div class="row" style="margin-bottom: 8px;">
-                <button class="btn btn-success" ng-click="showFieldForm=true">New field</button>
+                <button class="btn btn-success" ng-click="showFieldForm=true"><i class="glyphicon glyphicon-plus"></i> New field</button>
                 <button class="btn btn-danger" ng-click="showFieldForm=false" ng-show="showFieldForm">Cancel</button>
               </div>
               <div class="row" ng-show="showFieldForm">
@@ -96,17 +96,20 @@
             <h5><strong><i>{{ general.entityName }}.form.html</i></strong></h5>
             <pre><code class="language-markup" ng-bind-html="HTMLMarkup"></code></pre>
           </div>
-          <div class="row">
+          <div class="row" ng-show="general.controllerChk">
             <h5><strong><i>{{ general.entityName }}.controller.js</i></strong></h5>
             <pre><code class="language-js" ng-bind-html="controllerMarkup"></code></pre>
           </div>
-          <div class="row">
+          <div class="row" ng-show="general.serviceChk">
             <h5><strong><i>{{ general.entityName }}.service.js</i></strong></h5>
             <pre><code class="language-js" ng-bind-html="serviceMarkup">alert('otra cosa');</code></pre>
           </div>
         </div>
       </div>
     </div>
+    <footer class="text-center row">
+      Powered by <a href="http://the3ballsoft.com">The3ballsoft</a>
+    </footer>
 
     <script src="./dist/vendor.js"></script>
     <script src="./dist/bundle.js"></script>
