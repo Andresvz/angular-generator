@@ -111,7 +111,7 @@
     const moduleName = $scope.general.moduleName || 'app.'+$scope.general.entityName;
     let code = `
     angular.module('${moduleName}')
-      .controller('${$scope.general.entityName}Ctrl', ['$scope', function($scope) {
+      .controller('${$scope.general.entityName}Ctrl', ['$scope', '${$scope.general.entityName}Service', function($scope, ${$scope.general.entityName}Service) {
 
        \t$scope.save = function (){
           ${$scope.general.entityName}Service.create($scope.${$scope.general.entityName}Data, function(response){
