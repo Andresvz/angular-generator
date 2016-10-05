@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html ng-app="app">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Angular Generator</title>
+    <link rel="stylesheet" href="./bower_components/bootstrap/dist/css/bootstrap.min.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="./lib/prism.css" media="all">
+  </head>
+  <body ng-controller="AppCtrl">
+    <div class="container">
+      <div class="row">
+        <div class="text-center">
+          <h1>Angular Code Generator</h1>
+        </div>
+        <div class="col-md-4">
+          <form name="form">
+            <fieldset>
+              <legend>General Options</legend>
+              <div class="form-group">
+                <label>Entity Name</label>
+                <input type="text" class="form-control" ng-model="general.entityName" placeholder="e.g. users, companies, orders" required>
+              </div>
+              <div class="form-group">
+                <label>App module</label>
+                <input type="text" class="form-control" ng-model="general.moduleName" 
+                                                        placeholder="e.g. app.users, app.orders. [Default: app.<Entity Name>]">
+              </div>
+              <div class="form-group">
+                <label>Include service?</label>
+                <input type="checkbox" ng-model="general.serviceChk" />
+              </div>
+              <div class="form-group">
+                <label>Include controller?</label>
+                <input type="checkbox" ng-model="general.controllerChk" />
+              </div>
+              <div class="form-group" ng-show="general.serviceChk">
+                <label>API Url</label>
+                <input type="text" ng-model="general.apiUrl" class="form-control" placeholder="http://api.example.com/v1/entity/"/>
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend>Form Options</legend>
+              <div class="row" style="margin-bottom: 8px;">
+                <button class="btn btn-success" ng-click="showFieldForm=true">New field</button>
+                <button class="btn btn-danger" ng-click="showFieldForm=false" ng-show="showFieldForm">Cancel</button>
+              </div>
+              <div class="row" ng-show="showFieldForm">
+                <div class="form-inline form-group">
+                  <input type="text" ng-model="field.name" placeholder="name" class="form-control"/>
+                  <select class="form-control" ng-model="field.type">
+                    <option value="text">Text</option>
+                    <option value="email">Email</option>
+                    <option value="number">Number</option>
+                    <option value="date">Date</option>
+                    <option value="textarea">Text Area</option>
+                    <option value="password">Password</option>
+                    <option value="checkbox">Checkbox</option>
+                    <option value="file">File</option>
+                  </select>
+                  <label style="margin-left: 5px;">Is Required?</label>
+                  <input type="checkbox" ng-init="field.isReq=false" ng-model="field.isReq" style="margin-right: 5px;"/>
+                  <button class="btn btn-sm btn-success" ng-click="addField()"><i class="glyphicon glyphicon-ok"></i></button>
+                </div>
+              </div>
+              <table class="table table-condensed table-hover" ng-show="fields.length > 0">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Type</th>
+                      <th>Is Required</th>
+                      <th>Options</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                      <tr ng-repeat="field in fields">
+                        <td>{{ field.name }}</td>
+                        <td>{{ field.type}}</td>
+                        <td>{{ field.isReq }}</td>
+                        <td>
+                          <button class="btn btn-sm btn-danger" ng-click="removeField($index)">
+                            <i class="glyphicon glyphicon-remove"></i>
+                          </button>
+                        </td>
+                      </tr>
+                  </tbody>
+                </table>
+            </fieldset>
+            <div class="row text-center">
+              <button class="btn btn-primary" ng-click="generate()" ng-disabled="form.$invalid">Generate</button>
+            </div>
+          </form>
+        </div>
+        <div class="col-md-8">
+          <div class="row">
+            <h5><strong><i>{{ general.entityName }}.form.html</i></strong></h5>
+            <pre><code class="language-markup" ng-bind-html="HTMLMarkup"></code></pre>
+          </div>
+          <div class="row">
+            <h5><strong><i>{{ general.entityName }}.controller.js</i></strong></h5>
+            <pre><code class="language-js" ng-bind-html="controllerMarkup"></code></pre>
+          </div>
+          <div class="row">
+            <h5><strong><i>{{ general.entityName }}.service.js</i></strong></h5>
+            <pre><code class="language-js" ng-bind-html="serviceMarkup">alert('otra cosa');</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="./dist/vendor.js"></script>
+    <script src="./dist/bundle.js"></script>
+  </body>
+</html>
