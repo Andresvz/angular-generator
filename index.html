@@ -6,6 +6,19 @@
     <title>Angular Generator</title>
     <link rel="stylesheet" href="./bower_components/bootstrap/dist/css/bootstrap.min.css" type="text/css" media="all" />
     <link rel="stylesheet" href="./lib/prism.css" media="all">
+    <style>
+    .copy-msg {
+      color: white;
+      position: fixed;
+      top: 21px;
+      right: 8px;
+      background: rgba(0, 0, 0, 0.72);
+      border-radius: 10px;
+      padding: 10px;
+      transition: all .5 ease-out;
+    }
+    .copy-msg h3 { margin: 0; }
+    </style>
   </head>
   <body ng-controller="AppCtrl">
     <div class="container">
@@ -93,19 +106,43 @@
         </div>
         <div class="col-md-8">
           <div class="row">
-            <h5><strong><i>{{ general.entityName }}.form.html</i></strong></h5>
-            <pre><code class="language-markup" ng-bind-html="HTMLMarkup"></code></pre>
+            <button data-clipboard-target="#outputHtml" id="copyHTMLBtn" class="btn" style="display: inline;float:right;">
+              Copy
+            </button>
+            <h5>
+              <strong>
+                <i><a ng-href="{{htmlDownload}}" download="{{ general.entityName }}.form.html">{{ general.entityName }}.form.html</a></i>
+              </strong>
+            </h5>
+            <pre><code class="language-markup" id="outputHtml" ng-bind-html="HTMLMarkup"></code></pre>
           </div>
           <div class="row" ng-show="general.controllerChk">
-            <h5><strong><i>{{ general.entityName }}.controller.js</i></strong></h5>
-            <pre><code class="language-js" ng-bind-html="controllerMarkup"></code></pre>
+            <button data-clipboard-target="#outputController" id="copyControllerBtn" class="btn" style="display: inline;float:right;">
+              Copy
+            </button>
+            <h5>
+              <strong>
+                <a ng-href="{{controllerDownload}}" download="{{ general.entityName }}.controller.js"><i>{{ general.entityName }}.controller.js</i></a> 
+              </strong>
+            </h5>
+            <pre><code class="language-js" id="outputController" ng-bind-html="controllerMarkup"></code></pre>
           </div>
           <div class="row" ng-show="general.serviceChk">
-            <h5><strong><i>{{ general.entityName }}.service.js</i></strong></h5>
-            <pre><code class="language-js" ng-bind-html="serviceMarkup">alert('otra cosa');</code></pre>
+            <button data-clipboard-target="#outputService" id="copyServiceBtn" class="btn" style="display: inline;float:right;">
+              Copy
+            </button>
+            <h5>
+              <strong>
+                <a ng-href="{{serviceDownload}}" download="{{ general.entityName }}.service.js"><i>{{ general.entityName }}.service.js</i></a>
+              </strong>
+            </h5>
+            <pre><code class="language-js" id="outputService" ng-bind-html="serviceMarkup">alert('otra cosa');</code></pre>
           </div>
         </div>
       </div>
+    </div>
+    <div class="copy-msg" ng-show="showCopyMsg">
+      <h3>Copied!</h3>
     </div>
     <footer class="text-center row">
       Powered by <a href="http://the3ballsoft.com">The3ballsoft</a>

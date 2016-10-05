@@ -1,7 +1,8 @@
 
-angular.module('app', []).controller('AppCtrl', ['$scope', '$sce', function ($scope, $sce) {
+angular.module('app', []).controller('AppCtrl', ['$scope', '$sce', '$timeout', function ($scope, $sce, $timeout) {
   $scope.general = {};
   $scope.fields = [];
+  $scope.showCopyMsg = false;
 
   $scope.addField = () => {
     $scope.field.name = $scope.field.name.trim();
@@ -22,7 +23,48 @@ angular.module('app', []).controller('AppCtrl', ['$scope', '$sce', function ($sc
     $scope.controllerMarkup = $sce.trustAsHtml(Prism.highlight(controllerCode, Prism.languages.javascript));
     $scope.serviceMarkup = $sce.trustAsHtml(Prism.highlight(serviceCode, Prism.languages.javascript));
     $scope.HTMLMarkup = $sce.trustAsHtml(Prism.highlight(HTMLCode, Prism.languages.markup));
+
+    createDownloadLink('html', HTMLCode);
+    createDownloadLink('controller', controllerCode);
+    createDownloadLink('service', serviceCode);
+    initCopyButtons();
   };
+
+  function initCopyButtons() {
+    const resolve = function (e) {
+      console.log(e);
+      $scope.showCopyMsg = true;
+      $scope.$apply();
+      $timeout(() => {
+        $scope.showCopyMsg = false;
+      }, 3000);
+      e.clearSelection();
+    };
+
+    let clipboard1 = new Clipboard('#copyHTMLBtn');
+    let clipboard2 = new Clipboard('#copyControllerBtn');
+    let clipboard3 = new Clipboard('#copyServiceBtn');
+    clipboard1.on('success', resolve);
+    clipboard2.on('success', resolve);
+    clipboard3.on('success', resolve);
+  }
+
+  function createDownloadLink(type, content) {
+    switch (type) {
+      case 'html':
+        var blob = new Blob([content], { type: 'text/html' });
+        $scope.htmlDownload = (window.URL || window.webkitURL).createObjectURL(blob);
+        break;
+      case 'controller':
+        var blob = new Blob([content], { type: 'application/javascript' });
+        $scope.controllerDownload = (window.URL || window.webkitURL).createObjectURL(blob);
+        break;
+      case 'service':
+        var blob = new Blob([content], { type: 'application/javascript' });
+        $scope.serviceDownload = (window.URL || window.webkitURL).createObjectURL(blob);
+        break;
+    }
+  }
 
   function getHTMLMarkup() {
     const HTMLFields = $scope.fields.map(item => {
@@ -96,8 +138,6 @@ angular.module('app', []).controller('AppCtrl', ['$scope', '$sce', function ($sc
       `;
     return code;
   }
+}]).config(['$compileProvider', function ($compileProvider) {
+  $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|tel|file|blob):/);
 }]);
-
-this.create = function (data, callback, errorCallback) {
-  return $http.post(this.url, data).then(callback, errorCallback);
-};
