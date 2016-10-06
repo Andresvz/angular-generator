@@ -1,0 +1,9 @@
+{
+  "name": "angular-generator",
+  "author": "The3ballsoft",
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "angular": "^1.5.8",
+    "clipboard": "^1.5.12"
+  }
+}
